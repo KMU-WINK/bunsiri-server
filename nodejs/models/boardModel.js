@@ -6,7 +6,7 @@ const boardSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
-  }, // User 스키마에서의 userID와 연결
+  },
   content: { type: String, required: true },
   boardImages: { type: [Object] },
   location: {
