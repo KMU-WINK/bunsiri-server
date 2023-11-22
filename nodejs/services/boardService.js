@@ -1,12 +1,10 @@
-// services/boardService.js
 const Board = require("../models/boardModel");
 
 class BoardService {
-  async createBoard(userID, boardID, content, boardImages, location, gift) {
+  createBoard = async (userId, content, boardImages, location, gift) => {
     try {
       const newBoard = new Board({
-        userID,
-        boardID,
+        userId,
         content,
         boardImages,
         location,
@@ -18,11 +16,11 @@ class BoardService {
     } catch (error) {
       throw error;
     }
-  }
+  };
 
-  async getBoardById(boardID) {
+  getBoardById = async (boardId) => {
     try {
-      const board = await Board.findById(boardID);
+      const board = await Board.findOne(boardId);
       if (!board) {
         throw new Error("게시물을 찾을 수 없습니다.");
       }
@@ -30,11 +28,11 @@ class BoardService {
     } catch (error) {
       throw error;
     }
-  }
+  };
 
-  async updateBoard(boardID, updateData) {
+  updateBoard = async (boardId, updateData) => {
     try {
-      const updatedBoard = await Board.findByIdAndUpdate(boardID, updateData, {
+      const updatedBoard = await Board.findOneAndUpdate(boardId, updateData, {
         new: true,
       });
       if (!updatedBoard) {
@@ -44,11 +42,11 @@ class BoardService {
     } catch (error) {
       throw error;
     }
-  }
+  };
 
-  async deleteBoard(boardID) {
+  deleteBoard = async (boardId) => {
     try {
-      const deletedBoard = await Board.findByIdAndDelete(boardID);
+      const deletedBoard = await Board.findOneAndDelete(boardId);
       if (!deletedBoard) {
         throw new Error("게시물을 찾을 수 없습니다.");
       }
@@ -56,7 +54,7 @@ class BoardService {
     } catch (error) {
       throw error;
     }
-  }
+  };
 }
 
 module.exports = new BoardService();

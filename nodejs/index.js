@@ -6,7 +6,6 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swagger"); // swagger.js 파일을 불러옴
 const userRoutes = require("./routes/userRoutes");
 const boardRoutes = require("./routes/boardRoutes");
-const boardImageRoutes = require("./routes/boardImageRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const chatRoomRoutes = require("./routes/chatRoomRoutes");
 const mongoose = require("mongoose");
@@ -35,7 +34,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // 각 엔터티에 대한 라우터 등록
 app.use("/users", userRoutes);
 app.use("/boards", boardRoutes);
-app.use("/uploads", boardImageRoutes);
 app.use("/messages", messageRoutes);
 app.use("/chatrooms", chatRoomRoutes);
 

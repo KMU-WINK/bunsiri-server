@@ -1,13 +1,12 @@
 const boardService = require("../services/boardService");
 
 class BoardController {
-  async post(req, res) {
+  post = async (req, res) => {
     try {
-      const { userID, boardID, content, boardImages, location, gift } =
-        req.body;
+      const { userId, content, location, gift } = req.body;
+      const boardImages = req.files;
       const savedBoard = await boardService.createBoard(
-        userID,
-        boardID,
+        userId,
         content,
         boardImages,
         location,
@@ -17,37 +16,37 @@ class BoardController {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  };
 
-  async get(req, res) {
+  get = async (req, res) => {
     try {
-      const boardID = req.params.boardID;
-      const board = await boardService.getBoardById(boardID);
+      const boardId = req.params.boardId;
+      const board = await boardService.getBoardById(boardId);
       res.json({ board, images: board.imageFilenames });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  };
 
-  async patch(req, res) {
+  patch = async (req, res) => {
     try {
-      const boardID = req.params.boardID;
-      const updatedBoard = await boardService.updateBoard(boardID, req.body);
+      const boardId = req.params.boardId;
+      const updatedBoard = await boardService.updateBoard(boardId, req.body);
       res.json(updatedBoard);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  };
 
-  async delete(req, res) {
+  delete = async (req, res) => {
     try {
-      const boardID = req.params.boardID;
-      const result = await boardService.deleteBoard(boardID);
+      const boardId = req.params.boardId;
+      const result = await boardService.deleteBoard(boardId);
       res.json(result);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  };
 }
 
 module.exports = new BoardController();

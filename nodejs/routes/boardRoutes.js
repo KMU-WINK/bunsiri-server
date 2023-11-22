@@ -1,14 +1,27 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const boardController = require('../controllers/boardController');
+const boardController = require("../controllers/boardController");
+const multer = require("multer");
+const path = require("path");
 
+const uploads = multer({
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, "uploads/");
+    },
+    filename(req, file, cb) {
+      const ext = path.extname(file.originalname);
+      cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
+    },
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
 // router.post('/', boardController.post);
 // router.get('/:boardID', boardController.get);
 // router.patch('/:boardID', boardController.patch);
 // router.delete('/:boardID', boardController.delete);
 
 // module.exports = router;
-
 
 /**
  * @swagger
@@ -52,7 +65,7 @@ const boardController = require('../controllers/boardController');
  *       500:
  *         description: Internal Server Error.
  */
-router.get('/:boardID', boardController.get);
+router.get("/:boardID", boardController.get);
 
 /**
  * @swagger
@@ -75,7 +88,7 @@ router.get('/:boardID', boardController.get);
  *       500:
  *         description: Internal Server Error.
  */
-router.post('/', boardController.post);
+router.post("/", uploads.array("images", 3), boardController.post);
 
 /**
  * @swagger
@@ -104,7 +117,7 @@ router.post('/', boardController.post);
  *       500:
  *         description: Internal Server Error.
  */
-router.patch('/:boardID', boardController.patch);
+router.patch("/:boardID", boardController.patch);
 
 /**
  * @swagger
@@ -127,7 +140,7 @@ router.patch('/:boardID', boardController.patch);
  *       500:
  *         description: Internal Server Error.
  */
-router.delete('/:boardID', boardController.delete);
+router.delete("/:boardID", boardController.delete);
 
 module.exports = router;
 
