@@ -1,6 +1,14 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const boardController = require("../controllers/boardController");
+const boardController = require('../controllers/boardController');
+
+// router.post('/', boardController.post);
+// router.get('/:boardID', boardController.get);
+// router.patch('/:boardID', boardController.patch);
+// router.delete('/:boardID', boardController.delete);
+
+// module.exports = router;
+
 
 /**
  * @swagger
@@ -44,6 +52,7 @@ const boardController = require("../controllers/boardController");
  *       500:
  *         description: Internal Server Error.
  */
+router.get('/:boardID', boardController.get);
 
 /**
  * @swagger
@@ -66,6 +75,7 @@ const boardController = require("../controllers/boardController");
  *       500:
  *         description: Internal Server Error.
  */
+router.post('/', boardController.post);
 
 /**
  * @swagger
@@ -94,6 +104,7 @@ const boardController = require("../controllers/boardController");
  *       500:
  *         description: Internal Server Error.
  */
+router.patch('/:boardID', boardController.patch);
 
 /**
  * @swagger
@@ -116,20 +127,23 @@ const boardController = require("../controllers/boardController");
  *       500:
  *         description: Internal Server Error.
  */
-
-// 게시판 목록 조회
-router.get("/", boardController.getAllBoards);
-
-// 게시글 상세 정보 조회
-router.get("/:id", boardController.getBoardById);
-
-// 게시글 생성
-router.post("/", boardController.createBoard);
-
-// 게시글 업데이트
-router.put("/:id", boardController.updateBoard);
-
-// 게시글 삭제
-router.delete("/:id", boardController.deleteBoard);
+router.delete('/:boardID', boardController.delete);
 
 module.exports = router;
+
+// 게시판 목록 조회
+// router.get("/", boardController.getAllBoards);
+
+// // 게시글 상세 정보 조회
+// router.get("/:id", boardController.getBoardById);
+
+// // 게시글 생성
+// router.post("/", boardController.createBoard);
+
+// // 게시글 업데이트
+// router.put("/:id", boardController.updateBoard);
+
+// // 게시글 삭제
+// router.delete("/:id", boardController.deleteBoard);
+
+// module.exports = router;

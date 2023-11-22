@@ -1,39 +1,53 @@
-// 필요한 패키지나 모듈을 불러오는 부분
+const boardService = require("../services/boardService");
 
-// 게시판 목록 조회 컨트롤러
-const getAllBoards = (req, res) => {
-  // 여기에 게시판 목록을 조회하는 로직을 추가합니다.
-  res.send("Get all boards");
-};
+class BoardController {
+  async post(req, res) {
+    try {
+      const { userID, boardID, content, boardImages, location, gift } =
+        req.body;
+      const savedBoard = await boardService.createBoard(
+        userID,
+        boardID,
+        content,
+        boardImages,
+        location,
+        gift
+      );
+      res.json(savedBoard);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 
-// 게시글 상세 정보 조회 컨트롤러
-const getBoardById = (req, res) => {
-  // 여기에 게시글 상세 정보를 조회하는 로직을 추가합니다.
-  res.send("Get board by ID");
-};
+  async get(req, res) {
+    try {
+      const boardID = req.params.boardID;
+      const board = await boardService.getBoardById(boardID);
+      res.json({ board, images: board.imageFilenames });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 
-// 게시글 생성 컨트롤러
-const createBoard = (req, res) => {
-  // 여기에 게시글을 생성하는 로직을 추가합니다.
-  res.send("Create board");
-};
+  async patch(req, res) {
+    try {
+      const boardID = req.params.boardID;
+      const updatedBoard = await boardService.updateBoard(boardID, req.body);
+      res.json(updatedBoard);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 
-// 게시글 업데이트 컨트롤러
-const updateBoard = (req, res) => {
-  // 여기에 게시글 정보를 업데이트하는 로직을 추가합니다.
-  res.send("Update board");
-};
+  async delete(req, res) {
+    try {
+      const boardID = req.params.boardID;
+      const result = await boardService.deleteBoard(boardID);
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+}
 
-// 게시글 삭제 컨트롤러
-const deleteBoard = (req, res) => {
-  // 여기에 게시글을 삭제하는 로직을 추가합니다.
-  res.send("Delete board");
-};
-
-module.exports = {
-  getAllBoards,
-  getBoardById,
-  createBoard,
-  updateBoard,
-  deleteBoard,
-};
+module.exports = new BoardController();

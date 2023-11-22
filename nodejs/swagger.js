@@ -6,7 +6,8 @@ const swaggerDefinition = {
   info: {
     title: "Node.js API",
     version: "1.0.0",
-    description: "APIs for managing users, boards, messages, and chat rooms",
+    description:
+      "APIs for managing users, boards, boardImages, messages, and chat rooms",
   },
   servers: [
     {
