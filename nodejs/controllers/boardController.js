@@ -3,10 +3,11 @@ const boardService = require("../services/boardService");
 class BoardController {
   post = async (req, res) => {
     try {
-      const { userId, content, location, gift } = req.body;
-      const boardImages = req.files;
+      const { userId, title, content, location, gift } = req.body;
+      const boardImages = req.files.map((file) => file.path);
       const savedBoard = await boardService.createBoard(
         userId,
+        title,
         content,
         boardImages,
         location,

@@ -1,10 +1,11 @@
 const Board = require("../models/boardModel");
 
 class BoardService {
-  createBoard = async (userId, content, boardImages, location, gift) => {
+  createBoard = async (userId, title, content, boardImages, location, gift) => {
     try {
       const newBoard = new Board({
         userId,
+        title,
         content,
         boardImages,
         location,
