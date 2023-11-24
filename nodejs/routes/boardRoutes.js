@@ -16,12 +16,6 @@ const uploads = multer({
   }),
   limits: { fileSize: 5 * 1024 * 1024 },
 });
-// router.post('/', boardController.post);
-// router.get('/:boardID', boardController.get);
-// router.patch('/:boardID', boardController.patch);
-// router.delete('/:boardID', boardController.delete);
-
-// module.exports = router;
 
 /**
  * @swagger
@@ -74,11 +68,26 @@ router.get("/:boardID", boardController.get);
  *     summary: Create a new board
  *     description: Create a new board with the provided details.
  *     requestBody:
- *       required: true
  *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Board'  # Reference to Board schema
+ *         multipart/form-data:
+ *          schema:
+ *             $ref: '#/components/schemas/Board'  # Reference to ChatRoom schema
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: String
+ *               title:
+ *                 type: String
+ *               content:
+ *                 type: String
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: file
+ *               location:
+ *                 type: String
+ *               gift:
+ *                 type: String
  *     tags: [Boards]
  *     responses:
  *       201:
@@ -143,20 +152,3 @@ router.patch("/:boardID", boardController.patch);
 router.delete("/:boardID", boardController.delete);
 
 module.exports = router;
-
-// 게시판 목록 조회
-// router.get("/", boardController.getAllBoards);
-
-// // 게시글 상세 정보 조회
-// router.get("/:id", boardController.getBoardById);
-
-// // 게시글 생성
-// router.post("/", boardController.createBoard);
-
-// // 게시글 업데이트
-// router.put("/:id", boardController.updateBoard);
-
-// // 게시글 삭제
-// router.delete("/:id", boardController.deleteBoard);
-
-// module.exports = router;
