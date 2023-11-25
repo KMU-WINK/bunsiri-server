@@ -46,6 +46,34 @@ const chatRoomController = require("../controllers/chatRoomController");
 
 /**
  * @swagger
+ * /chatrooms/board/{id}:
+ *   get:
+ *     summary: Get all chat rooms by Board ID.
+ *     description: Retrieve a list of all chat rooms.
+ *     tags: [ChatRooms]
+ *     responses:
+ *       200:
+ *         description: A list of chat rooms.
+ *       500:
+ *         description: Internal Server Error.
+ */
+
+/**
+ * @swagger
+ * /chatrooms/user/{id}:
+ *   get:
+ *     summary: Get all chat rooms by User ID.
+ *     description: Retrieve a list of all chat rooms.
+ *     tags: [ChatRooms]
+ *     responses:
+ *       200:
+ *         description: A list of chat rooms.
+ *       500:
+ *         description: Internal Server Error.
+ */
+
+/**
+ * @swagger
  * /chatrooms:
  *   post:
  *     summary: Create a new chat room
@@ -62,34 +90,6 @@ const chatRoomController = require("../controllers/chatRoomController");
  *         description: Chat room created successfully.
  *       400:
  *         description: Bad Request.
- *       500:
- *         description: Internal Server Error.
- */
-
-/**
- * @swagger
- * /chatrooms/{id}:
- *   put:
- *     summary: Update chat room by ID
- *     description: Update chat room information based on ID.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/ChatRoom'  # Reference to ChatRoom schema
- *     tags: [ChatRooms]
- *     responses:
- *       200:
- *         description: Chat room updated successfully.
- *       404:
- *         description: Chat room not found.
  *       500:
  *         description: Internal Server Error.
  */
@@ -122,11 +122,14 @@ router.get("/", chatRoomController.getAllChatRooms);
 // 채팅방 상세 정보 조회
 router.get("/:id", chatRoomController.getChatRoomById);
 
+// 채팅방 상세 정보 조회 (게시글 기준)
+router.get("/board/:id", chatRoomController.getChatRoomsByBoardId);
+
+// 채팅방 상세 정보 조회 (참여자 기준)
+router.get("/user/:id", chatRoomController.getChatRoomsByUserId);
+
 // 채팅방 생성
 router.post("/", chatRoomController.createChatRoom);
-
-// 채팅방 업데이트
-router.put("/:id", chatRoomController.updateChatRoom);
 
 // 채팅방 삭제
 router.delete("/:id", chatRoomController.deleteChatRoom);
