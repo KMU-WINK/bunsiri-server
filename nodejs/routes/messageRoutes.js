@@ -56,7 +56,11 @@ const messageController = require("../controllers/messageController");
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Message'  # Reference to Message schema
+ *             $ref: '#/models/messageModel'  # Reference to Message schema
+ *           example:
+ *             sender: "senderUser"
+ *             recipient: "revieverUser"
+ *             content: "Hello, World!"
  *     tags: [Messages]
  *     responses:
  *       201:
@@ -84,7 +88,11 @@ const messageController = require("../controllers/messageController");
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Message'  # Reference to Message schema
+ *             $ref: '#/models/messageModel'  # Reference to Message schema
+ *           example:
+ *             sender: "senderUser"
+ *             recipient: "revieverUser"
+ *             content: "this is updated message."
  *     tags: [Messages]
  *     responses:
  *       200:
