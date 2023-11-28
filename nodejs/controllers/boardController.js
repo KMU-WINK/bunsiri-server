@@ -3,15 +3,22 @@ const boardService = require("../services/boardService");
 class BoardController {
   post = async (req, res) => {
     try {
-      const { userId, title, content, location, gift } = req.body;
+      const { userId, title, content, location, reward } = req.body;
       const boardImages = req.files.map((file) => file.path);
+
+      const offset = 1000 * 60 * 60 * 9;
+      const createTime = new Date(new Date().getTime() + offset);
+      let createTimeString = createTime.toISOString();
+      createTimeString = createTimeString.slice(0, 19);
+
       const savedBoard = await boardService.createBoard(
         userId,
         title,
         content,
         boardImages,
         location,
-        gift
+        reward,
+        createTimeString
       );
       res.json(savedBoard);
     } catch (error) {

@@ -86,7 +86,7 @@ router.get("/:boardID", boardController.get);
  *                   type: file
  *               location:
  *                 type: String
- *               gift:
+ *               reward:
  *                 type: String
  *     tags: [Boards]
  *     responses:
