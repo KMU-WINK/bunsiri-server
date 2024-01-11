@@ -21,7 +21,7 @@ class BoardController {
         createTimeString,
         tab
       );
-      res.json({ _id: savedBoard._id }, savedBoard);
+      res.json({ _id: savedBoard._id });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

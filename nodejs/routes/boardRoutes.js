@@ -59,7 +59,7 @@ const uploads = multer({
  *       500:
  *         description: Internal Server Error.
  */
-router.get("/:boardID", boardController.get);
+router.get("/:boardId", boardController.get);
 
 /**
  * @swagger
@@ -128,7 +128,7 @@ router.post("/", uploads.array("images", 3), boardController.post);
  *       500:
  *         description: Internal Server Error.
  */
-router.patch("/:boardID", boardController.patch);
+router.patch("/:boardId", boardController.patch);
 
 /**
  * @swagger
@@ -151,6 +151,6 @@ router.patch("/:boardID", boardController.patch);
  *       500:
  *         description: Internal Server Error.
  */
-router.delete("/:boardID", boardController.delete);
+router.delete("/:boardId", boardController.delete);
 
 module.exports = router;
