@@ -32,7 +32,7 @@ class BoardService {
 
   getBoardById = async (_id) => {
     try {
-      const board = await Board.findOne(_id);
+      const board = await Board.findOne({ _id: _id });
       if (!board) {
         throw new Error("게시물을 찾을 수 없습니다.");
       }
@@ -44,9 +44,13 @@ class BoardService {
 
   updateBoard = async (_id, updateData) => {
     try {
-      const updatedBoard = await Board.findOneAndUpdate(_id, updateData, {
-        new: true,
-      });
+      const updatedBoard = await Board.findOneAndUpdate(
+        { _id: _id },
+        updateData,
+        {
+          new: true,
+        }
+      );
       if (!updatedBoard) {
         throw new Error("게시물을 찾을 수 없습니다.");
       }
@@ -58,7 +62,7 @@ class BoardService {
 
   deleteBoard = async (_id) => {
     try {
-      const deletedBoard = await Board.findOneAndDelete(_id);
+      const deletedBoard = await Board.findOneAndDelete({ _id: _id });
       if (!deletedBoard) {
         throw new Error("게시물을 찾을 수 없습니다.");
       }
