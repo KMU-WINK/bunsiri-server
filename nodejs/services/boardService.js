@@ -1,7 +1,16 @@
 const Board = require("../models/boardModel");
 
 class BoardService {
-  createBoard = async (userId, title, content, boardImages, location, gift) => {
+  createBoard = async (
+    userId,
+    title,
+    content,
+    boardImages,
+    location,
+    reward,
+    createTime,
+    tab
+  ) => {
     try {
       const newBoard = new Board({
         userId,
@@ -9,7 +18,9 @@ class BoardService {
         content,
         boardImages,
         location,
-        gift,
+        reward,
+        createTime,
+        tab,
       });
 
       const savedBoard = await newBoard.save();
