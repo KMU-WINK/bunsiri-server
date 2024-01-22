@@ -50,11 +50,11 @@ class ChatRoomService {
 
   createChatRoom = async (boardId, userId) => {
     try {
-      const board = await Board.findOne(boardId);
-      const boardUserId = board.userId;
+      const board = await Board.findOne( { _id: boardId } );
+      const boardOwnerId = board.userId;
       const newChatRoom = new ChatRoom({
         boardId,
-        boardUserId,
+        boardOwnerId,
         userId
       });
 

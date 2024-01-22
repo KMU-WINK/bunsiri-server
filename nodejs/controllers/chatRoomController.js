@@ -52,10 +52,8 @@ const getChatRoomsByUserId = async (req, res) => {
 // 채팅방 생성 컨트롤러
 const createChatRoom = async (req, res) => {
   try {
-    const {
-      boardId,
-      userId
-    } = req.body;
+    const { boardId } = req.body;
+    const userId = req.user._id;
     const savedChatRoom = await chatRoomService.createChatRoom(
       boardId,
       userId

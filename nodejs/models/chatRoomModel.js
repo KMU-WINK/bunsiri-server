@@ -18,8 +18,8 @@ const chatRoomSchema = new mongoose.Schema({
         required: true
     },
     createdAt: {
-        type: mongoose.Schema.Types.Date,
-        default: mongoose.Schema.Types.Date.now,
+        type: Date,
+        default: Date.now,
         required: true
     }
 });
