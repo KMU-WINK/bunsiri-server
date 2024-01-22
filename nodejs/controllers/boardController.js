@@ -3,7 +3,8 @@ const boardService = require("../services/boardService");
 class BoardController {
   post = async (req, res) => {
     try {
-      const { userId, title, content, location, reward, tab } = req.body;
+      const { userId, title, content, location, address, reward, tab } =
+        req.body;
       const boardImages = req.files.map((file) => file.path);
 
       const offset = 1000 * 60 * 60 * 9;
@@ -17,6 +18,7 @@ class BoardController {
         content,
         boardImages,
         location,
+        address,
         reward,
         createTimeString,
         tab
@@ -27,11 +29,21 @@ class BoardController {
     }
   };
 
-  get = async (req, res) => {
+  getBoard = async (req, res) => {
     try {
       const _id = req.params.boardId;
       const board = await boardService.getBoardById(_id);
       res.json({ board, images: board.imageFilenames });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+  getBoardByUserId = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const boards = await boardService.getBoardsByUserId(userId);
+      res.json({ boards });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
