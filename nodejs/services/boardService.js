@@ -7,6 +7,7 @@ class BoardService {
     content,
     boardImages,
     location,
+    address,
     reward,
     createTime,
     tab
@@ -18,6 +19,7 @@ class BoardService {
         content,
         boardImages,
         location,
+        address,
         reward,
         createTime,
         tab,
@@ -37,6 +39,18 @@ class BoardService {
         throw new Error("게시물을 찾을 수 없습니다.");
       }
       return board;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getBoardsByUserId = async (userId) => {
+    try {
+      const boards = await Board.find({ userId: userId });
+      if (!boards.length) {
+        throw new Error("해당 사용자가 작성한 게시물을 찾을 수 없습니다.");
+      }
+      return boards;
     } catch (error) {
       throw error;
     }
