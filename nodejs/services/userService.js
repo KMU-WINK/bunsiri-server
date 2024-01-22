@@ -38,9 +38,9 @@ class UserService {
     return User.findByIdAndUpdate(userId, userData, { new: true });
   }
 
-  deleteUser(userId) {
+  deleteUser(userEmail) {
     // 사용자 삭제 로직
-    return User.findByIdAndDelete(userId);
+    return User.findByIdAndDelete({ email : userEmail });
   }
 }
 
