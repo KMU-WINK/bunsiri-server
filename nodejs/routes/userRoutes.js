@@ -72,10 +72,17 @@
         passport.authenticate('google', { failureRedirect: '/' }),
         (req, res) => {
             // 여기서 추가 정보 입력 화면을 렌더링하거나 리다이렉트합니다.
-            console.log(req.user);
             res.render('userInfo', { user: req.user });
         }
     );
+
+    router.get("/logout", (req, res, next) => {
+        req.logout((err) => {
+            if (err) { return next(err); }
+            req.session.destroy();
+            res.redirect('/users/profile');
+        });
+    });
 
     router.post('/createUserWithAdditionalInfo', (req, res) => {
         // 여기서 사용자의 추가 정보를 받아와서 createUser 함수 호출
@@ -84,11 +91,18 @@
         sessionId = Object.keys(req.sessionStore.sessions)[0];
         const userData = JSON.parse(req.sessionStore.sessions[sessionId]);
         const userEmail = userData.passport.user;
-        console.log(userEmail);
         // 사용자 생성
         userController.createUser(userEmail, { nickname, username, major });
         // 사용자 생성 후 리다이렉트 또는 응답 처리
         res.redirect('/');
+    });
+
+    router.get('/withdrawal', (req, res) => {
+        const currentUser = req.user;
+
+        const userEmail = currentUser.email;
+        console.log();
+        //userController.deleteUser();
     });
 
     router.get('/profile', (req, res) => {

@@ -43,8 +43,8 @@ const updateUser = (req, res) => {
 };
 
 // 사용자 삭제 컨트롤러
-const deleteUser = (req, res) => {
-  // 여기에 사용자를 삭제하는 로직을 추가합니다.
+const deleteUser = async (userEmail, res) => {
+  userService.deleteUser(userEmail);
   res.send("Delete user");
 };
 
