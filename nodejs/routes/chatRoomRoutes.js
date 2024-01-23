@@ -83,7 +83,9 @@ const chatRoomController = require("../controllers/chatRoomController");
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ChatRoom'  # Reference to ChatRoom schema
+ *             $ref: '#/models/chatRoomModel'  # Reference to ChatRoom schema
+ *           example:
+ *             boardId: "boardId"
  *     tags: [ChatRooms]
  *     responses:
  *       201:

@@ -51,6 +51,7 @@ const messageController = require("../controllers/messageController");
  *   post:
  *     summary: Create a new message
  *     description: Create a new message with the provided details.
+ *
  *     requestBody:
  *       required: true
  *       content:
@@ -58,10 +59,12 @@ const messageController = require("../controllers/messageController");
  *           schema:
  *             $ref: '#/models/messageModel'  # Reference to Message schema
  *           example:
- *             sender: "senderUser"
- *             recipient: "revieverUser"
- *             content: "Hello, World!"
+ *            chatRoomId: "chatRoomId"
+ *            recipientId: "recipientUserId"
+ *            content: "this is message."
+ *
  *     tags: [Messages]
+ *
  *     responses:
  *       201:
  *         description: Message created successfully.
