@@ -9,8 +9,17 @@ class MessageService {
     return messageModel.findById(messageId);
   }
 
-  createMessage(messageData) {
-    const newMessage = new messageModel(messageData);
+  getAllmessagesByChatRoomId(chatRoomId) {
+    return messageModel.find({ chatRoomId: chatRoomId });
+  }
+
+  createMessage(userId, reqBody) {
+    const newMessage = new messageModel({
+      chatRoomId: reqBody.chatRoomId,
+      senderId: userId,
+      recipientId: reqBody.recipientId,
+      content: reqBody.content,
+    });
     return newMessage.save();
   }
 

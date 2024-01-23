@@ -11,23 +11,25 @@ const messageRoutes = require("./routes/messageRoutes");
 const chatRoomRoutes = require("./routes/chatRoomRoutes");
 
 const mongoose = require("mongoose");
-const passport = require('passport');
-const session = require('express-session');
-const passportConfig = require('./passport')
+const passport = require("passport");
+const session = require("express-session");
+const passportConfig = require("./passport");
 
 const app = express();
 const port = process.env.PORT || 8888;
 
 //Passport 초기화
-app.use(session({
-  resave: false,
-  saveUninitialized: false,
-  secret: process.env.COOKIE_SECRET,
-  cookie: {
-    httpOnly: true,
-    secure: false,
-  },
-}));
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+    },
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -36,12 +38,8 @@ passportConfig();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
 // MongoDB 연결 설정
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(process.env.MONGODB_URI);
 
 // MongoDB 연결 확인
 const db = mongoose.connection;
