@@ -3,7 +3,8 @@ const boardService = require("../services/boardService");
 class BoardController {
   post = async (req, res) => {
     try {
-      const { userId, title, content, location, reward } = req.body;
+      const { userId, title, content, location, address, reward, tab } =
+        req.body;
       const boardImages = req.files.map((file) => file.path);
 
       const offset = 1000 * 60 * 60 * 9;
@@ -17,20 +18,32 @@ class BoardController {
         content,
         boardImages,
         location,
+        address,
         reward,
-        createTimeString
+        createTimeString,
+        tab
       );
-      res.json(savedBoard);
+      res.json({ _id: savedBoard._id });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   };
 
-  get = async (req, res) => {
+  getBoard = async (req, res) => {
     try {
-      const boardId = req.params.boardId;
-      const board = await boardService.getBoardById(boardId);
+      const _id = req.params.boardId;
+      const board = await boardService.getBoardById(_id);
       res.json({ board, images: board.imageFilenames });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+  getBoardByUserId = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const boards = await boardService.getBoardsByUserId(userId);
+      res.json({ boards });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -38,8 +51,8 @@ class BoardController {
 
   patch = async (req, res) => {
     try {
-      const boardId = req.params.boardId;
-      const updatedBoard = await boardService.updateBoard(boardId, req.body);
+      const _id = req.params.boardId;
+      const updatedBoard = await boardService.updateBoard(_id, req.body);
       res.json(updatedBoard);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -48,8 +61,8 @@ class BoardController {
 
   delete = async (req, res) => {
     try {
-      const boardId = req.params.boardId;
-      const result = await boardService.deleteBoard(boardId);
+      const _id = req.params.boardId;
+      const result = await boardService.deleteBoard(_id);
       res.json(result);
     } catch (error) {
       res.status(500).json({ error: error.message });

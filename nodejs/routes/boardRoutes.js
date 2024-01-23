@@ -59,7 +59,31 @@ const uploads = multer({
  *       500:
  *         description: Internal Server Error.
  */
-router.get("/:boardID", boardController.get);
+router.get("/:boardId", boardController.getBoard);
+
+// userId를 기준으로 특정 사용자가 작성한 게시물 모두 불러오기
+/**
+ * @swagger
+ * /boards/user/{id}:
+ *   get:
+ *     summary: Get boards by userId
+ *     description: Retrieve detailed information about a board based on ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     tags: [Boards]
+ *     responses:
+ *       200:
+ *         description: Detailed information about the board.
+ *       404:
+ *         description: Board not found.
+ *       500:
+ *         description: Internal Server Error.
+ */
+router.get("/user/:userId", boardController.getBoardByUserId);
 
 /**
  * @swagger
@@ -88,6 +112,8 @@ router.get("/:boardID", boardController.get);
  *                 type: String
  *               reward:
  *                 type: String
+ *               tab:
+ *                 type: String
  *     tags: [Boards]
  *     responses:
  *       201:
@@ -102,7 +128,7 @@ router.post("/", uploads.array("images", 3), boardController.post);
 /**
  * @swagger
  * /boards/{id}:
- *   put:
+ *   patch:
  *     summary: Update board by ID
  *     description: Update board information based on ID.
  *     parameters:
@@ -126,7 +152,7 @@ router.post("/", uploads.array("images", 3), boardController.post);
  *       500:
  *         description: Internal Server Error.
  */
-router.patch("/:boardID", boardController.patch);
+router.patch("/:boardId", boardController.patch);
 
 /**
  * @swagger
@@ -149,6 +175,6 @@ router.patch("/:boardID", boardController.patch);
  *       500:
  *         description: Internal Server Error.
  */
-router.delete("/:boardID", boardController.delete);
+router.delete("/:boardId", boardController.delete);
 
 module.exports = router;

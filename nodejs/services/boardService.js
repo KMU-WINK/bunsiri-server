@@ -7,8 +7,10 @@ class BoardService {
     content,
     boardImages,
     location,
+    address,
     reward,
-    createTime
+    createTime,
+    tab
   ) => {
     try {
       const newBoard = new Board({
@@ -17,8 +19,10 @@ class BoardService {
         content,
         boardImages,
         location,
+        address,
         reward,
         createTime,
+        tab,
       });
 
       const savedBoard = await newBoard.save();
@@ -28,9 +32,9 @@ class BoardService {
     }
   };
 
-  getBoardById = async (boardId) => {
+  getBoardById = async (_id) => {
     try {
-      const board = await Board.findOne(boardId);
+      const board = await Board.findOne({ _id: _id });
       if (!board) {
         throw new Error("게시물을 찾을 수 없습니다.");
       }
@@ -40,11 +44,27 @@ class BoardService {
     }
   };
 
-  updateBoard = async (boardId, updateData) => {
+  getBoardsByUserId = async (userId) => {
     try {
-      const updatedBoard = await Board.findOneAndUpdate(boardId, updateData, {
-        new: true,
-      });
+      const boards = await Board.find({ userId: userId });
+      if (!boards.length) {
+        throw new Error("해당 사용자가 작성한 게시물을 찾을 수 없습니다.");
+      }
+      return boards;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  updateBoard = async (_id, updateData) => {
+    try {
+      const updatedBoard = await Board.findOneAndUpdate(
+        { _id: _id },
+        updateData,
+        {
+          new: true,
+        }
+      );
       if (!updatedBoard) {
         throw new Error("게시물을 찾을 수 없습니다.");
       }
@@ -54,9 +74,9 @@ class BoardService {
     }
   };
 
-  deleteBoard = async (boardId) => {
+  deleteBoard = async (_id) => {
     try {
-      const deletedBoard = await Board.findOneAndDelete(boardId);
+      const deletedBoard = await Board.findOneAndDelete({ _id: _id });
       if (!deletedBoard) {
         throw new Error("게시물을 찾을 수 없습니다.");
       }
