@@ -94,7 +94,7 @@ const uploads = multer({
  * @swagger
  * /boards:
  *   get:
- *     summary: Get all boards
+ *     summary: 모든 게시글 불러오기
  *     description: Retrieve a list of all boards.
  *     tags: [Boards]
  *     responses:
@@ -112,7 +112,7 @@ const uploads = multer({
  * @swagger
  * /boards/{id}:
  *   get:
- *     summary: Get board by ID
+ *     summary: 특정 게시글 읽어오기
  *     description: Retrieve detailed information about a board based on ID.
  *     parameters:
  *       - in: path
@@ -133,14 +133,13 @@ const uploads = multer({
  *       500:
  *         description: Internal Server Error.
  */
-router.get("/:boardId", boardController.getBoard);
 
 // userId를 기준으로 특정 사용자가 작성한 게시물 모두 불러오기
 /**
  * @swagger
  * /boards/user/{id}:
  *   get:
- *     summary: Get boards by userId
+ *     summary: 특정 유저가 작성한 게시글 불러오기
  *     description: Retrieve detailed information about a board based on ID.
  *     parameters:
  *       - in: path
@@ -161,13 +160,64 @@ router.get("/:boardId", boardController.getBoard);
  *       500:
  *         description: Internal Server Error.
  */
-router.get("/user/:userId", boardController.getBoardByUserId);
+
+/**
+ * @swagger
+ * /boards/location/{location}:
+ *   get:
+ *     summary: 위치에 따라 게시글 불러오기
+ *     description: Retrieve detailed information about a board based on ID.
+ *     parameters:
+ *       - in: path
+ *         name: location
+ *         required: true
+ *         schema:
+ *           type: string
+ *     tags: [Boards]
+ *     responses:
+ *       200:
+ *         description: Detailed information about the board.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/BoardsArray'
+ *       404:
+ *         description: Board not found.
+ *       500:
+ *         description: Internal Server Error.
+ */
+
+/**
+ * @swagger
+ * /boards/tab/{tab}:
+ *   get:
+ *     summary: Tab(물건을 찾아요/주인을 찾아요)에 따라 게시글 불러오기
+ *     description: Retrieve detailed information about a board based on ID.
+ *     parameters:
+ *       - in: path
+ *         name: tab
+ *         required: true
+ *         schema:
+ *           type: string
+ *     tags: [Boards]
+ *     responses:
+ *       200:
+ *         description: Detailed information about the board.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/BoardsArray'
+ *       404:
+ *         description: Board not found.
+ *       500:
+ *         description: Internal Server Error.
+ */
 
 /**
  * @swagger
  * /boards:
  *   post:
- *     summary: Create a new board
+ *     summary: 게시글 작성
  *     description: Create a new board with the provided details.
  *     requestBody:
  *       content:
@@ -205,13 +255,12 @@ router.get("/user/:userId", boardController.getBoardByUserId);
  *       500:
  *         description: Internal Server Error.
  */
-router.post("/", uploads.array("images", 3), boardController.post);
 
 /**
  * @swagger
  * /boards/{id}:
  *   patch:
- *     summary: Update board by ID
+ *     summary: 게시글 수정하기
  *     description: Update board information based on ID.
  *     parameters:
  *       - in: path
@@ -238,13 +287,12 @@ router.post("/", uploads.array("images", 3), boardController.post);
  *       500:
  *         description: Internal Server Error.
  */
-router.patch("/:boardId", boardController.patch);
 
 /**
  * @swagger
  * /boards/{id}:
  *   delete:
- *     summary: Delete board by ID
+ *     summary: 게시글 삭제하기
  *     description: Delete a board based on ID.
  *     parameters:
  *       - in: path
@@ -261,6 +309,19 @@ router.patch("/:boardId", boardController.patch);
  *       500:
  *         description: Internal Server Error.
  */
+
+router.get("/:boardId", boardController.getBoard);
+
+router.get("/user/:userId", boardController.getBoardByUserId);
+
+router.get("/location/:location", boardController.getBoardByLocation);
+
+router.get("/tab/:tab", boardController.getBoardByTab);
+
+router.post("/", uploads.array("images", 3), boardController.post);
+
+router.patch("/:boardId", boardController.patch);
+
 router.delete("/:boardId", boardController.delete);
 
 module.exports = router;

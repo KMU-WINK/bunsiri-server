@@ -49,6 +49,26 @@ class BoardController {
     }
   };
 
+  getBoardByLocation = async (req, res) => {
+    try {
+      const location = req.params.location;
+      const boards = await boardService.getBoardsByLocation(location);
+      res.json({ boards });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+  getBoardByTab = async (req, res) => {
+    try {
+      const tab = req.params.tab;
+      const boards = await boardService.getBoardsByTab(tab);
+      res.json({ boards });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
   patch = async (req, res) => {
     try {
       const _id = req.params.boardId;
