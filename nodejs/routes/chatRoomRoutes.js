@@ -46,10 +46,16 @@ const chatRoomController = require("../controllers/chatRoomController");
 
 /**
  * @swagger
- * /chatrooms/board/{id}:
+ * /chatrooms/board/{boardId}:
  *   get:
  *     summary: Get all chat rooms by Board ID.
  *     description: Retrieve a list of all chat rooms.
+ *     parameters:
+ *       - in: path
+ *         name: boardId
+ *         required: true
+ *         schema:
+ *           type: string
  *     tags: [ChatRooms]
  *     responses:
  *       200:
@@ -60,10 +66,16 @@ const chatRoomController = require("../controllers/chatRoomController");
 
 /**
  * @swagger
- * /chatrooms/user/{id}:
+ * /chatrooms/user/{userId}:
  *   get:
  *     summary: Get all chat rooms by User ID.
  *     description: Retrieve a list of all chat rooms.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
  *     tags: [ChatRooms]
  *     responses:
  *       200:
@@ -125,7 +137,7 @@ router.get("/", chatRoomController.getAllChatRooms);
 router.get("/:id", chatRoomController.getChatRoomById);
 
 // 채팅방 상세 정보 조회 (게시글 기준)
-router.get("/board/:id", chatRoomController.getChatRoomsByBoardId);
+router.get("/board/:boardId", chatRoomController.getChatRoomsByBoardId);
 
 // 채팅방 상세 정보 조회 (참여자 기준)
 router.get("/user/:id", chatRoomController.getChatRoomsByUserId);

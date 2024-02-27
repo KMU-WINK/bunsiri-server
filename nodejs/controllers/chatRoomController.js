@@ -16,7 +16,8 @@ const getAllChatRooms = async (req, res) => {
 // 채팅방 상세 정보 조회 컨트롤러
 const getChatRoomById = async (req, res) => {
   try {
-    const chatRoom = await chatRoomService.getChatRoomById(req.params.chatRoomId);
+    const chatRoomId = req.params.chatRoomId
+    const chatRoom = await chatRoomService.getChatRoomById(chatRoomId);
     res.json(chatRoom);
   } catch (error) {
     res.status(500).json({
@@ -28,7 +29,8 @@ const getChatRoomById = async (req, res) => {
 // 채팅방 상세 정보 조회 컨트롤러 (게시글 ID 기준)
 const getChatRoomsByBoardId = async (req, res) => {
   try {
-    const chatRooms = await chatRoomService.getChatRoomsByBoardId(req.params.boardId);
+    const boardId = req.params.boardId;
+    const chatRooms = await chatRoomService.getChatRoomsByBoardId(boardId);
     res.json(chatRooms);
   } catch (error) {
     res.status(500).json({
