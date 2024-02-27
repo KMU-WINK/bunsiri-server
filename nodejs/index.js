@@ -62,5 +62,8 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+// 연결된 데이터베이스의 주소 확인
+//console.log('현재 연결된 데이터베이스 주소:', db.client.s.options);
+
 //로그인 테스트용
 app.set("view engine", "ejs");

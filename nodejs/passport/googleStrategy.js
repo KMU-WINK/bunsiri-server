@@ -11,7 +11,7 @@ module.exports = () => {
         clientSecret: process.env.CLIENT_SECRET,
         callbackURL: "http://localhost:8888/users/auth/google/callback",
     },async (accessToken, refreshToken, profile, done) => {
-
+        console.log(accessToken)
 
         try{
             const exUser = await userService.getUserById(profile.email);

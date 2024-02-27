@@ -72,6 +72,7 @@
         passport.authenticate('google', { failureRedirect: '/' }),
         (req, res) => {
             // 여기서 추가 정보 입력 화면을 렌더링하거나 리다이렉트합니다.
+            console.log(req.user);
             res.render('userInfo', { user: req.user });
         }
     );
@@ -101,7 +102,6 @@
         const currentUser = req.user;
 
         const userEmail = currentUser.email;
-        console.log();
         //userController.deleteUser();
     });
 
