@@ -38,7 +38,7 @@ const messageController = require("../controllers/messageController");
  * @swagger
  * /messages:
  *   get:
- *     summary: Get all messages
+ *     summary: 모든 쪽지 불러오기
  *     description: Retrieve a list of all messages.
  *     tags: [Messages]
  *     responses:
@@ -56,7 +56,7 @@ const messageController = require("../controllers/messageController");
  * @swagger
  * /messages/{chatRoomId}:
  *   get:
- *     summary: Get all messages by chatRoomId
+ *     summary: 특정 채팅방에 있는 모든 쪽지 불러오기
  *     description: Retrieve a list of all messages.
  *     parameters:
  *       - in: path
@@ -80,7 +80,7 @@ const messageController = require("../controllers/messageController");
  * @swagger
  * /messages/{id}:
  *   get:
- *     summary: Get message by ID
+ *     summary: 특정 쪽지 불러오기
  *     description: Retrieve detailed information about a message based on ID.
  *     parameters:
  *       - in: path
@@ -106,7 +106,7 @@ const messageController = require("../controllers/messageController");
  * @swagger
  * /messages:
  *   post:
- *     summary: Create a new message
+ *     summary: 새로운 쪽지 생성하기
  *     description: Create a new message with the provided details.
  *     requestBody:
  *       required: true
@@ -136,7 +136,7 @@ const messageController = require("../controllers/messageController");
  * @swagger
  * /messages/{id}:
  *   put:
- *     summary: Update message by ID
+ *     summary: 쪽지 수정하기
  *     description: Update message information based on ID.
  *     parameters:
  *       - in: path
@@ -172,7 +172,7 @@ const messageController = require("../controllers/messageController");
  * @swagger
  * /messages/{id}:
  *   delete:
- *     summary: Delete message by ID
+ *     summary: 쪽지 삭제하기
  *     description: Delete a message based on ID.
  *     parameters:
  *       - in: path
