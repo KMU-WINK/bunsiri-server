@@ -33,7 +33,7 @@ class BoardController {
     try {
       const _id = req.params.boardId;
       const board = await boardService.getBoardById(_id);
-      res.json({ board, images: board.imageFilenames });
+      res.json({ board });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

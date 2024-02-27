@@ -22,6 +22,72 @@ const uploads = multer({
  * tags:
  *   name: Boards
  *   description: API operations related to boards
+ * definitions:
+ *   Board:
+ *     type: object
+ *     properties:
+ *       userId:
+ *         type: string
+ *         description: The ID of the user who created the board.
+ *       title:
+ *         type: string
+ *         description: The title of the board.
+ *       content:
+ *         type: string
+ *         description: The content of the board.
+ *       boardImages:
+ *         type: array
+ *         items:
+ *           type: object
+ *         description: Array of board images.
+ *       location:
+ *         type: string
+ *         enum:
+ *           - 성곡도서관
+ *           - 글로벌센터
+ *           - 공학관
+ *           - 테니스장
+ *           - 농구장
+ *           - 운동장
+ *           - 복지관
+ *           - 미래관
+ *           - 예술관
+ *           - 경상관
+ *           - 국제관
+ *           - 경영관
+ *           - 북악관
+ *           - 조형관
+ *           - 본부관
+ *           - 법학관
+ *           - 과학관
+ *           - 휘랑관
+ *           - 영빈관
+ *           - 생활관 C동
+ *           - 생활관 A동
+ *         description: Location of the board.
+ *       address:
+ *         type: string
+ *         description: Address associated with the board.
+ *       reward:
+ *         type: string
+ *         description: Reward for the board.
+ *       matching:
+ *         type: boolean
+ *         default: false
+ *         description: Indicates if the board is matched.
+ *       createTime:
+ *         type: string
+ *         description: Time when the board was created.
+ *       tab:
+ *         type: string
+ *         enum:
+ *           - 주인을 찾아요
+ *           - 물건을 찾아요
+ *         description: Category of the board.
+ *   BoardsArray:
+ *     type: array
+ *     items:
+ *       $ref: '#/definitions/Board'
  */
 
 /**
@@ -34,6 +100,10 @@ const uploads = multer({
  *     responses:
  *       200:
  *         description: A list of boards.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/BoardsArray'
  *       500:
  *         description: Internal Server Error.
  */
@@ -54,6 +124,10 @@ const uploads = multer({
  *     responses:
  *       200:
  *         description: Detailed information about the board.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Board'
  *       404:
  *         description: Board not found.
  *       500:
@@ -78,6 +152,10 @@ router.get("/:boardId", boardController.getBoard);
  *     responses:
  *       200:
  *         description: Detailed information about the board.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/BoardsArray'
  *       404:
  *         description: Board not found.
  *       500:
@@ -118,6 +196,10 @@ router.get("/user/:userId", boardController.getBoardByUserId);
  *     responses:
  *       201:
  *         description: Board created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Board'
  *       400:
  *         description: Bad Request.
  *       500:
@@ -147,6 +229,10 @@ router.post("/", uploads.array("images", 3), boardController.post);
  *     responses:
  *       200:
  *         description: Board updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Board'
  *       404:
  *         description: Board not found.
  *       500:
