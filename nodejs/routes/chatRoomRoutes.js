@@ -12,7 +12,7 @@ const chatRoomController = require("../controllers/chatRoomController");
  * @swagger
  * /chatrooms:
  *   get:
- *     summary: Get all chat rooms
+ *     summary: 모든 채팅방 불러오기
  *     description: Retrieve a list of all chat rooms.
  *     tags: [ChatRooms]
  *     responses:
@@ -26,7 +26,7 @@ const chatRoomController = require("../controllers/chatRoomController");
  * @swagger
  * /chatrooms/{id}:
  *   get:
- *     summary: Get chat room by ID
+ *     summary: 특정 채팅방 읽어오기
  *     description: Retrieve detailed information about a chat room based on ID.
  *     parameters:
  *       - in: path
@@ -46,10 +46,16 @@ const chatRoomController = require("../controllers/chatRoomController");
 
 /**
  * @swagger
- * /chatrooms/board/{id}:
+ * /chatrooms/board/{boardId}:
  *   get:
- *     summary: Get all chat rooms by Board ID.
+ *     summary: 해당 게시글의 모든 채팅방 불러오기
  *     description: Retrieve a list of all chat rooms.
+ *     parameters:
+ *       - in: path
+ *         name: boardId
+ *         required: true
+ *         schema:
+ *           type: string
  *     tags: [ChatRooms]
  *     responses:
  *       200:
@@ -60,10 +66,16 @@ const chatRoomController = require("../controllers/chatRoomController");
 
 /**
  * @swagger
- * /chatrooms/user/{id}:
+ * /chatrooms/user/{userId}:
  *   get:
- *     summary: Get all chat rooms by User ID.
+ *     summary: 해당 유저가 참여한 모든 채팅방 불러오기
  *     description: Retrieve a list of all chat rooms.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
  *     tags: [ChatRooms]
  *     responses:
  *       200:
@@ -76,7 +88,7 @@ const chatRoomController = require("../controllers/chatRoomController");
  * @swagger
  * /chatrooms:
  *   post:
- *     summary: Create a new chat room
+ *     summary: 새로운 채팅방 만들기
  *     description: Create a new chat room with the provided details.
  *     requestBody:
  *       required: true
@@ -100,7 +112,7 @@ const chatRoomController = require("../controllers/chatRoomController");
  * @swagger
  * /chatrooms/{id}:
  *   delete:
- *     summary: Delete chat room by ID
+ *     summary: 채팅방 삭제하기
  *     description: Delete a chat room based on ID.
  *     parameters:
  *       - in: path
@@ -125,7 +137,7 @@ router.get("/", chatRoomController.getAllChatRooms);
 router.get("/:id", chatRoomController.getChatRoomById);
 
 // 채팅방 상세 정보 조회 (게시글 기준)
-router.get("/board/:id", chatRoomController.getChatRoomsByBoardId);
+router.get("/board/:boardId", chatRoomController.getChatRoomsByBoardId);
 
 // 채팅방 상세 정보 조회 (참여자 기준)
 router.get("/user/:id", chatRoomController.getChatRoomsByUserId);

@@ -9,6 +9,16 @@ const getAllMessages = async (req, res) => {
   }
 };
 
+const getAllMessagesByChatRoomId = async (req, res) => {
+  try {
+    const chatRoomId = req.params.chatRoomId;
+    const messages = await messageService.getAllMessagesByChatRoomId(chatRoomId);
+    res.send(messages);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
 const getMessageById = async (req, res) => {
   try {
     const messageId = req.params.id;
@@ -57,6 +67,7 @@ const deleteMessage = async (req, res) => {
 
 module.exports = {
   getAllMessages,
+  getAllMessagesByChatRoomId,
   getMessageById,
   createMessage,
   updateMessage,

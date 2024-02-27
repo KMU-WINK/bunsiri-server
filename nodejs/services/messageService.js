@@ -6,10 +6,11 @@ class MessageService {
   }
 
   getMessageById(messageId) {
-    return messageModel.findById(messageId);
+    return messageModel.findById({ _id: messageId });
   }
 
-  getAllmessagesByChatRoomId(chatRoomId) {
+
+  getAllMessagesByChatRoomId (chatRoomId) {
     return messageModel.find({ chatRoomId: chatRoomId });
   }
 

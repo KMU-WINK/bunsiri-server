@@ -56,6 +56,30 @@ class BoardService {
     }
   };
 
+  getBoardsByLocation = async (location) => {
+    try {
+      const boards = await Board.find({ location: location });
+      if (!boards.length) {
+        throw new Error("해당 위치에서 작성한 게시물을 찾을 수 없습니다.");
+      }
+      return boards;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getBoardsByTab = async (tab) => {
+    try {
+      const boards = await Board.find({ tab: tab });
+      if (!boards.length) {
+        throw new Error("해당 탭에서 작성한 게시물을 찾을 수 없습니다.");
+      }
+      return boards;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   updateBoard = async (_id, updateData) => {
     try {
       const updatedBoard = await Board.findOneAndUpdate(
