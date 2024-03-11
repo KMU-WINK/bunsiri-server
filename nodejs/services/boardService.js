@@ -1,4 +1,5 @@
 const Board = require("../models/boardModel");
+const ChatRoom = require("../models/chatRoomModel");
 
 class BoardService {
   createBoard = async (
@@ -32,6 +33,15 @@ class BoardService {
     }
   };
 
+  getAllBoards = async () => {
+    try {
+      const boards = await Board.find();
+      return boards;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   getBoardById = async (_id) => {
     try {
       const board = await Board.findOne({ _id: _id });
@@ -49,30 +59,6 @@ class BoardService {
       const boards = await Board.find({ userId: userId });
       if (!boards.length) {
         throw new Error("해당 사용자가 작성한 게시물을 찾을 수 없습니다.");
-      }
-      return boards;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  getBoardsByLocation = async (location) => {
-    try {
-      const boards = await Board.find({ location: location });
-      if (!boards.length) {
-        throw new Error("해당 위치에서 작성한 게시물을 찾을 수 없습니다.");
-      }
-      return boards;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  getBoardsByTab = async (tab) => {
-    try {
-      const boards = await Board.find({ tab: tab });
-      if (!boards.length) {
-        throw new Error("해당 탭에서 작성한 게시물을 찾을 수 없습니다.");
       }
       return boards;
     } catch (error) {

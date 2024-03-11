@@ -29,6 +29,15 @@ class BoardController {
     }
   };
 
+  getAllBoards = async (req, res) => {
+    try {
+      const boards = await boardService.getAllBoards();
+      res.json(boards);
+    }  catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
   getBoard = async (req, res) => {
     try {
       const _id = req.params.boardId;

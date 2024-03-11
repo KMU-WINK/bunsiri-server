@@ -29,6 +29,9 @@ const uploads = multer({
  *       userId:
  *         type: string
  *         description: The ID of the user who created the board.
+ *       nickname:
+ *         type: string
+ *         description: The nickname of the user who created the board.
  *       title:
  *         type: string
  *         description: The title of the board.
@@ -107,6 +110,8 @@ const uploads = multer({
  *       500:
  *         description: Internal Server Error.
  */
+
+
 
 /**
  * @swagger
@@ -309,6 +314,8 @@ const uploads = multer({
  *       500:
  *         description: Internal Server Error.
  */
+
+router.get("/", boardController.getAllBoards);
 
 router.get("/:boardId", boardController.getBoard);
 

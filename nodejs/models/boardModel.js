@@ -7,6 +7,7 @@ const boardSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  nickname: { type: String, required: true },
   title: { type: String, required: true },
   content: { type: String, required: true },
   boardImages: { type: [Object] },
