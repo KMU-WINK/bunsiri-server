@@ -11,7 +11,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: "http://localhost:8888", // 서버 주소 (포트는 프로젝트에 맞게 변경)
+      url: "http://13.209.54.103:8888", // 서버 주소 (포트는 프로젝트에 맞게 변경)
       description: "Development server",
     },
   ],

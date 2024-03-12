@@ -109,17 +109,16 @@
             });
             const userEmail = response.data.email;
             const exUser =  await userController.getUserByEmail(userEmail);
-            console.log(exUser);
             if (exUser) {
                 const token = jwt.sign({ userEmail }, JWT_SECRET, { expiresIn: '1h' });
                 res.json({
-                    "token": token,
-                    "userInfo": exUser
+                    token: token,
+                    userInfo: exUser,
+                    message: 'exist',
                 });
             } else {
                 res.json({
-                    "token": accessToken,
-                    "userInfo": exUser
+                    message: 'none',
                 })
             }
 
@@ -149,8 +148,8 @@
         // 사용자 생성 후 리다이렉트 또는 응답 처리
         const token = jwt.sign({ userEmail }, JWT_SECRET, { expiresIn: '1h' });
         res.json({
-            "token": token,
-            "userInfo": newUser
+            token: token,
+            userInfo: newUser
         });
     });
 
