@@ -138,12 +138,15 @@
 
     router.post('/join', async (req, res) => {
         // 여기서 사용자의 추가 정보를 받아와서 createUser 함수 호출
-        const { userEmail, nickname, username, major } = req.body;
+        const { accessToken, nickname, username, major } = req.body;
 
-        // sessionId = Object.keys(req.sessionStore.sessions)[0];
-        // const userData = JSON.parse(req.sessionStore.sessions[sessionId]);
-        // const userEmail = userData.passport.user;
-        // 사용자 생성
+        const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+        const userEmail = response.data.email;
+
         const newUser = await userController.createUser(userEmail, nickname, username, major );
         // 사용자 생성 후 리다이렉트 또는 응답 처리
         const token = jwt.sign({ userEmail }, JWT_SECRET, { expiresIn: '1h' });
