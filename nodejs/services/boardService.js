@@ -66,6 +66,19 @@ class BoardService {
     }
   };
 
+  getBoardsByLocation = async (location) => {
+    try {
+      console.log(location);
+      const boards = await Board.find({ location: location });
+      if (!boards.length) {
+        throw new Error("해당 위치로 작성한 게시물을 찾을 수 없습니다.");
+      }
+      return boards;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   updateBoard = async (_id, updateData) => {
     try {
       const updatedBoard = await Board.findOneAndUpdate(
