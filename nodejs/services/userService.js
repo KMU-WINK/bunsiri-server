@@ -12,9 +12,9 @@ class UserService {
     return User.findById(userId);
   }
 
-  getUserByEmail(userEmail) {
+  getUserByEmail =  (userEmail) => {
     // 특정 이메일로 사용자 조회 로직
-    return User.findOne({ email: userEmail });
+    return  User.findOne({ email: userEmail });
   }
 
   createUser = async (email, username, nickname, major) => {

@@ -14,23 +14,31 @@ const getUserById = (req, res) => {
   res.send("Get user by ID");
 };
 
+const getUserByEmail =  (userEmail) => {
+  try {
+    const user = userService.getUserByEmail(userEmail);
+    return user;
+  } catch (error) {
+    throw new Error('Failed to get user by email');
+  }
+}
+
 // 사용자 생성 컨트롤러
-const createUser = async (googleEmail, additionalInfo, res) => {
+const createUser = async (googleEmail, username, nickname, major) => {
   try {
     allowedDomain = 'kookmin.ac.kr';
     if (!validator.isEmail(googleEmail) || !googleEmail.endsWith(`@${allowedDomain}`)) {
       throw new Error('국민대학교 이메일만 가입 가능합니다');
     }
-    let user = await userService.getUserByEmail(googleEmail); // 이메일로 찾는 로직 생성 필요
-    if (!user) {
-      user = await userService.createUser(
+    console.log(nickname);
+    const user = await userService.createUser(
           googleEmail,
-          additionalInfo.username,
-          additionalInfo.nickname,
-          additionalInfo.major,
+          username,
+          nickname,
+          major,
       )
-    }
-    res.send(user); // 생성된 사용자 객체를 클라이언트에게 응답으로 보냅니다.
+    console.log(user);
+    return user;
   } catch (err) {
 
   }
@@ -54,4 +62,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  getUserByEmail,
 };

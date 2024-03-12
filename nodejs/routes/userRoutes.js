@@ -1,10 +1,15 @@
     const express = require("express");
+    const { OAuth2Client } = require('google-auth-library');
+    const client = new OAuth2Client(process.env["CLIENT_ID "]);
     const path = require('path');
     const router = express.Router();
     const userController = require("../controllers/userController");
     const passport = require('passport');
     const {isAuthenticated} = require("passport/lib/http/request");
     require('../passport/googleStrategy')();
+    const axios = require('axios');
+    const jwt = require('jsonwebtoken');
+    const JWT_SECRET = process.env.JWT_SECRET;
 
     /**
      * @swagger
@@ -77,6 +82,53 @@
         }
     );
 
+    // router.post('/login', async (req, res, next) => {
+    //     try {
+    //         console.log(req.body.accessToken);
+    //         const ticket = await client.verifyIdToken({
+    //             idToken: req.body.accessToken
+    //         });
+    //         const payload = ticket.getPayload();
+    //         const userId = payload['sub'];
+    //
+    //         console.log(payload);
+    //         res.json(200);
+    //     } catch (error) {
+    //         console.error(error);
+    //         res.status(500).json({ error: 'Internal Server Error' });
+    //     }
+    // })
+
+    router.post('/login', async (req, res, next) => {
+        try {
+            const accessToken = req.body.accessToken;
+            const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            const userEmail = response.data.email;
+            const exUser =  await userController.getUserByEmail(userEmail);
+            console.log(exUser);
+            if (exUser) {
+                const token = jwt.sign({ userEmail }, JWT_SECRET, { expiresIn: '1h' });
+                res.json({
+                    "token": token,
+                    "userInfo": exUser
+                });
+            } else {
+                res.json({
+                    "token": accessToken,
+                    "userInfo": exUser
+                })
+            }
+
+        } catch (error) {
+            console.error('Error fetching Google user info:', error);
+            throw error;
+        }
+    })
+
     router.get("/logout", (req, res, next) => {
         req.logout((err) => {
             if (err) { return next(err); }
@@ -85,17 +137,21 @@
         });
     });
 
-    router.post('/createUserWithAdditionalInfo', (req, res) => {
+    router.post('/join', async (req, res) => {
         // 여기서 사용자의 추가 정보를 받아와서 createUser 함수 호출
-        const { nickname, username, major } = req.body;
+        const { userEmail, nickname, username, major } = req.body;
 
-        sessionId = Object.keys(req.sessionStore.sessions)[0];
-        const userData = JSON.parse(req.sessionStore.sessions[sessionId]);
-        const userEmail = userData.passport.user;
+        // sessionId = Object.keys(req.sessionStore.sessions)[0];
+        // const userData = JSON.parse(req.sessionStore.sessions[sessionId]);
+        // const userEmail = userData.passport.user;
         // 사용자 생성
-        userController.createUser(userEmail, { nickname, username, major });
+        const newUser = await userController.createUser(userEmail, nickname, username, major );
         // 사용자 생성 후 리다이렉트 또는 응답 처리
-        res.redirect('/');
+        const token = jwt.sign({ userEmail }, JWT_SECRET, { expiresIn: '1h' });
+        res.json({
+            "token": token,
+            "userInfo": newUser
+        });
     });
 
     router.get('/withdrawal', (req, res) => {
