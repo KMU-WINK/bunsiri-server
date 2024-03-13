@@ -20,6 +20,7 @@ class MessageService {
   async createMessage(userId, boardId, content) {
 
 
+
     const board = await boardModel.findOne({
       _id: boardId
     }).exec();
@@ -40,9 +41,6 @@ class MessageService {
       _id: userId
     }).exec();
 
-    const chatroomOwner = await userModel.findOne({
-      _id: chatRoom.userId
-    }).exec();
 
 
     let newMessage;
@@ -50,6 +48,9 @@ class MessageService {
     console.log(chatRoom);
 
     if (chatRoom) {
+      const chatroomOwner = await userModel.findOne({
+        _id: chatRoom.userId
+      }).exec();
 
       //받은 사람이 작성자일때, 보낸 사람은 user 또는 sender
       if (board.userId != userId){
