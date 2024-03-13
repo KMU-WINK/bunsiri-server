@@ -13,7 +13,9 @@ class ChatRoomService {
 
   getChatRoomById = async (chatRoomId) => {
     try {
-      const chatRoom = await ChatRoom.findOne(chatRoomId);
+      const chatRoom = await ChatRoom.findOne({
+        _id: chatRoomId
+      });
       if (!chatRoom) {
         throw new Error("채팅방을 찾을 수 없습니다.");
       }
@@ -36,8 +38,12 @@ class ChatRoomService {
     try {
       const chatRooms = await ChatRoom.find({
         $or: [
-          { boardOwnerId: userId },
-          { userId: userId }
+          {
+            boardOwnerId: userId
+          },
+          {
+            userId: userId
+          }
         ]
       });
       return chatRooms;
@@ -48,7 +54,9 @@ class ChatRoomService {
 
   createChatRoom = async (boardId, userId) => {
     try {
-      const board = await Board.findOne( { _id: boardId } );
+      const board = await Board.findOne({
+        _id: boardId
+      });
       const boardOwnerId = board.userId;
       const newChatRoom = new ChatRoom({
         boardId,
@@ -65,7 +73,9 @@ class ChatRoomService {
 
   deleteChatRoomById = async (chatRoomId) => {
     try {
-      const deletedChatRoom = await ChatRoom.findOneAndDelete(chatRoomId);
+      const deletedChatRoom = await ChatRoom.findOneAndDelete({
+        _id: chatRoomId
+      });
       if (!deletedChatRoom) {
         throw new Error("채팅방을 찾을 수 없습니다.");
       }
