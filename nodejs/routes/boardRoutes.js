@@ -4,18 +4,44 @@ const boardController = require("../controllers/boardController");
 const multer = require("multer");
 const path = require("path");
 
+const aws = require("aws-sdk");
+const multerS3 = require("multer-s3");
+
+// AWS S3 설정
+const s3 = new aws.S3({
+  // AWS 계정 정보 입력
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: "ap-northeast-2",
+});
+
 const uploads = multer({
-  storage: multer.diskStorage({
-    destination(req, file, cb) {
-      cb(null, "uploads/");
-    },
-    filename(req, file, cb) {
-      const ext = path.extname(file.originalname);
-      cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
+  storage: multerS3({
+    s3: s3,
+    bucket: "bunsiri", // 버킷 이름
+    acl: "public-read", // 이미지를 공개로 설정합니다.
+    key: function (req, file, cb) {
+      // images 폴더 내에 파일 저장
+      const folder = "images/";
+      const filename = Date.now().toString() + "-" + file.originalname;
+      cb(null, folder + filename); // 파일 경로 설정
     },
   }),
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 파일 크기 제한을 설정합니다.
 });
+
+// const uploads = multer({
+//   storage: multer.diskStorage({
+//     destination(req, file, cb) {
+//       cb(null, "uploads/");
+//     },
+//     filename(req, file, cb) {
+//       const ext = path.extname(file.originalname);
+//       cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
+//     },
+//   }),
+//   limits: { fileSize: 5 * 1024 * 1024 },
+// });
 
 /**
  * @swagger
@@ -110,8 +136,6 @@ const uploads = multer({
  *       500:
  *         description: Internal Server Error.
  */
-
-
 
 /**
  * @swagger
@@ -232,6 +256,8 @@ const uploads = multer({
  *             type: object
  *             properties:
  *               userId:
+ *                 type: String
+ *               nickname:
  *                 type: String
  *               title:
  *                 type: String
