@@ -13,11 +13,27 @@ class MessageService {
   }
 
 
-  getAllMessagesByChatRoomId (chatRoomId) {
-    return messageModel.find({ chatRoomId: chatRoomId });
+  async getAllMessagesByChatRoomId (chatRoomId) {
+
+    const messages = await messageModel.find({ chatRoomId: chatRoomId });
+
+    const chatroom = await chatRoomModel.findOne({ _id : chatRoomId });
+
+    const board = await boardModel.findOne({ _id : chatroom.boardId });
+
+
+    const response = {
+      boardIamges: board.boardImages,
+      title: board.title,
+      reward: board.reward,
+      isRewarded: chatroom.isRewarded,
+      messages: messages
+    }
+
+    return response;
   }
 
-  async createMessage(userId, boardId, content) {
+  async createMessage(userId, boardId, content, chatroomId) {
 
 
 
@@ -30,11 +46,7 @@ class MessageService {
     }).exec();
 
     const chatRoom = await chatRoomModel.findOne({
-      boardId: boardId,
-      $or: [
-        { userId: userId },
-        { boardOwnerId: userId }
-      ]
+      _id: chatroomId
     }).exec();
 
     const sender = await userModel.findOne({
@@ -45,8 +57,6 @@ class MessageService {
 
     let newMessage;
 
-    console.log(chatRoom);
-
     if (chatRoom) {
       const chatroomOwner = await userModel.findOne({
         _id: chatRoom.userId
@@ -54,7 +64,6 @@ class MessageService {
 
       //받은 사람이 작성자일때, 보낸 사람은 user 또는 sender
       if (board.userId != userId){
-        console.log("one");
         newMessage = new messageModel({
           chatRoomId: chatRoom._id,
           senderId: userId,

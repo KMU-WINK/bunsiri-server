@@ -34,7 +34,8 @@ const createMessage = async (req, res) => {
     const userId = req.body.userId;
     const boardId = req.body.boardId;
     const content = req.body.content;
-    const newMessage = await messageService.createMessage(userId, boardId, content);
+    const chatroomId = req.body.chatroomId;
+    const newMessage = await messageService.createMessage(userId, boardId, content, chatroomId);
     res.send(newMessage);
   } catch (err) {
     res.status(500).send(err.message);
