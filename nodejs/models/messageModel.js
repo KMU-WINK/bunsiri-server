@@ -11,9 +11,17 @@ const messageSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  senderNickname: {
+    type: String,
+    required: true,
+  },
   recipientId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
+  },
+  recipientNickname: {
+    type: String,
     required: true,
   },
   content: {

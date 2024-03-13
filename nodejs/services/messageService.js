@@ -15,6 +15,7 @@ class MessageService {
   }
 
   createMessage(userId, reqBody) {
+
     const newMessage = new messageModel({
       chatRoomId: reqBody.chatRoomId,
       senderId: userId,
