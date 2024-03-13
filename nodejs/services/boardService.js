@@ -4,6 +4,7 @@ const ChatRoom = require("../models/chatRoomModel");
 class BoardService {
   createBoard = async (
     userId,
+    nickname,
     title,
     content,
     boardImages,
@@ -16,6 +17,7 @@ class BoardService {
     try {
       const newBoard = new Board({
         userId,
+        nickname,
         title,
         content,
         boardImages,
