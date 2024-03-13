@@ -194,7 +194,7 @@ module.exports = router;
 
 // 메시지 목록 조회
 router.get("/", messageController.getAllMessages);
-router.get("/:chatRoomId", messageController.getAllMessagesByChatRoomId);
+router.get("/chatroom/:chatRoomId", messageController.getAllMessagesByChatRoomId);
 
 // 메시지 상세 정보 조회
 router.get("/:id", messageController.getMessageById);

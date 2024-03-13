@@ -76,7 +76,7 @@ class BoardService {
       });
       console.log(boards);
       if (!boards.length) {
-        throw new Error("해당 위치로 작성한 게시물을 찾을 수 없습니다.");
+        return [];
       }
       return boards;
     } catch (error) {

@@ -32,7 +32,7 @@ class MessageService {
       boardId: boardId,
       $or: [
         { userId: userId },
-        { userId: board.userId }
+        { boardOwnerId: userId }
       ]
     }).exec();
 
@@ -40,9 +40,10 @@ class MessageService {
       _id: userId
     }).exec();
 
-    const recipient = await userModel.findOne({
-      _id: board.userId
+    const chatroomOwner = await userModel.findOne({
+      _id: chatRoom.userId
     }).exec();
+
 
     let newMessage;
 
@@ -51,13 +52,14 @@ class MessageService {
     if (chatRoom) {
 
       //받은 사람이 작성자일때, 보낸 사람은 user 또는 sender
-      if (board.userId === recipient._id){
+      if (board.userId != userId){
+        console.log("one");
         newMessage = new messageModel({
           chatRoomId: chatRoom._id,
           senderId: userId,
           senderNickname: sender.nickname,
           recipientId: board.userId,
-          recipientNickname: recipient.nickname,
+          recipientNickname: boardOwner.nickname,
           content: content,
         });
 
@@ -69,8 +71,8 @@ class MessageService {
           chatRoomId: chatRoom._id,
           senderId: board.userId,
           senderNickname: sender.nickname,
-          recipientId: board.userId,
-          recipientNickname: boardOwner.nickname,
+          recipientId: chatroomOwner._id,
+          recipientNickname: chatroomOwner.nickname,
           content: content,
         });
 
@@ -82,7 +84,7 @@ class MessageService {
     } else {
       const newChatRoom = new chatRoomModel({
         boardId: boardId,
-        boardOwnerId: recipient._id,
+        boardOwnerId: boardOwner._id,
         userId: userId,
         sendNickname: sender.nickname,
         lastChat: content,
@@ -96,7 +98,7 @@ class MessageService {
         senderId: userId,
         senderNickname: sender.nickname,
         recipientId: board.userId,
-        recipientNickname: recipient.nickname,
+        recipientNickname: boardOwner.nickname,
         content: content
       });
     }
