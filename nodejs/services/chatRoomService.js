@@ -1,6 +1,7 @@
 const Board = require("../models/boardModel");
 const ChatRoom = require("../models/chatRoomModel");
 const User = require("../models/userModel");
+const messageModel = require("../models/messageModel");
 
 class ChatRoomService {
   getAllChatRooms = async () => {
@@ -81,6 +82,27 @@ class ChatRoomService {
       throw error;
     }
   };
+
+  updateChatRoom = async (chatroomId) => {
+    try {
+      const updatedChatRoom = await ChatRoom.findByIdAndUpdate(
+          chatroomId, // 쿼리 조건
+          { $set: { isRewarded: true } }, // 업데이트 내용
+          { new: true } // 업데이트 후 최신 문서를 반환하도록 설정
+      );
+
+      if (updatedChatRoom) {
+        console.log("isRewarded가 True로 업데이트되었습니다.");
+        return updatedChatRoom;
+      } else {
+        console.log("채팅방을 찾을 수 없습니다.");
+        return null;
+      }
+    } catch (error) {
+      console.error("isRewarded 업데이트 중 오류가 발생했습니다:", error);
+      throw error; // 오류를 상위 호출자에게 전파
+    }
+  }
 
   deleteChatRoomById = async (chatRoomId) => {
     try {

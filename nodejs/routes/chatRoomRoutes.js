@@ -141,6 +141,8 @@ router.get("/board/:boardId", chatRoomController.getChatRoomsByBoardId);
 
 router.get("/user/:userId", chatRoomController.getChatRoomsByUserId);
 
+router.patch("/check", chatRoomController.updateChatRoom);
+
 // 채팅방 삭제
 router.delete("/:id", chatRoomController.deleteChatRoom);
 

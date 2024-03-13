@@ -27,6 +27,7 @@ class MessageService {
       title: board.title,
       reward: board.reward,
       isRewarded: chatroom.isRewarded,
+      boardId: board._id,
       messages: messages
     }
 

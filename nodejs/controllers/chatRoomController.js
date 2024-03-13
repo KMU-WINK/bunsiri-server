@@ -1,4 +1,5 @@
 const chatRoomService = require("../services/chatRoomService");
+const messageService = require("../services/messageService");
 // 필요한 패키지나 모듈을 불러오는 부분
 
 // 채팅방 목록 조회 컨트롤러
@@ -67,6 +68,16 @@ const createChatRoom = async (req, res) => {
   }
 };
 
+const updateChatRoom = async (req, res) => {
+  try {
+    const chatroomId = req.body.chatroomId;
+    const updatedChat = await chatRoomService.updateChatRoom(chatroomId);
+    res.send(updatedChat);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
 // 채팅방 삭제 컨트롤러
 const deleteChatRoom = async (req, res) => {
   try {
@@ -85,5 +96,6 @@ module.exports = {
   getChatRoomsByBoardId,
   getChatRoomsByUserId,
   createChatRoom,
+  updateChatRoom,
   deleteChatRoom,
 };
