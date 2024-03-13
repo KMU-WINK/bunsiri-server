@@ -68,10 +68,13 @@ class BoardService {
     }
   };
 
-  getBoardsByLocation = async (location) => {
+  getBoardsByTabAndLocation = async (tab, locations) => {
     try {
-      console.log(location);
-      const boards = await Board.find({ location: location });
+
+      const boards = await Board.find({
+        tab: tab,
+        location: { $in: locations }
+      });
       if (!boards.length) {
         throw new Error("해당 위치로 작성한 게시물을 찾을 수 없습니다.");
       }
