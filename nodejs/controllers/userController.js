@@ -5,7 +5,7 @@ const validator = require('validator');
 // 사용자 목록 조회 컨트롤러
 const getAllUsers = (req, res) => {
   // 여기에 사용자 목록을 조회하는 로직을 추가합니다.
-  res.send("Get all users");
+  res.json(userService.getAllUsers());
 };
 
 // 사용자 상세 정보 조회 컨트롤러
@@ -30,14 +30,12 @@ const createUser = async (googleEmail, username, nickname, major) => {
     if (!validator.isEmail(googleEmail) || !googleEmail.endsWith(`@${allowedDomain}`)) {
       throw new Error('국민대학교 이메일만 가입 가능합니다');
     }
-    console.log(nickname);
     const user = await userService.createUser(
           googleEmail,
           username,
           nickname,
           major,
       )
-    console.log(user);
     return user;
   } catch (err) {
 

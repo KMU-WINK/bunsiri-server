@@ -55,6 +55,7 @@
      *         description: Internal Server Error.
      */
 
+
     /**
      * @swagger
      * /auth/google:
@@ -147,9 +148,9 @@
         });
         const userEmail = response.data.email;
 
-        const newUser = await userController.createUser(userEmail, nickname, username, major );
+        const newUser = await userController.createUser(userEmail, username, nickname, major );
         // 사용자 생성 후 리다이렉트 또는 응답 처리
-        const token = jwt.sign({ userEmail }, JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ userEmail }, JWT_SECRET, { expiresIn: '10h' });
         res.json({
             token: token,
             userInfo: newUser
