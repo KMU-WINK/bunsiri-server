@@ -13,7 +13,7 @@ class BoardController {
         reward,
         tab,
       } = req.body;
-      const boardImages = req.files.map((file) => file.path);
+      const boardImages = req.files.map((file) => file.location);
 
       const offset = 1000 * 60 * 60 * 9;
       const createTime = new Date(new Date().getTime() + offset);
