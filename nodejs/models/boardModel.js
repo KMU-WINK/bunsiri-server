@@ -38,6 +38,7 @@ const boardSchema = new mongoose.Schema({
     ],
     required: true,
   },
+  isRewardGiven: { type: Boolean, default: false },
   address: { type: String },
   reward: { type: String },
   matching: { type: Boolean, default: false },

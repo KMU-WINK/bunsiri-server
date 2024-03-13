@@ -139,12 +139,6 @@ router.get("/:id", chatRoomController.getChatRoomById);
 // 채팅방 상세 정보 조회 (게시글 기준)
 router.get("/board/:boardId", chatRoomController.getChatRoomsByBoardId);
 
-// 채팅방 상세 정보 조회 (참여자 기준)
-router.get("/user/:id", chatRoomController.getChatRoomsByUserId);
-
-// 채팅방 생성
-router.post("/", chatRoomController.createChatRoom);
-
 // 채팅방 삭제
 router.delete("/:id", chatRoomController.deleteChatRoom);
 

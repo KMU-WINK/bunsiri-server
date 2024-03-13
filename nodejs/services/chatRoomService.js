@@ -1,5 +1,6 @@
 const Board = require("../models/boardModel");
 const ChatRoom = require("../models/chatRoomModel");
+const User = require("../models/userModel");
 
 class ChatRoomService {
   getAllChatRooms = async () => {
@@ -27,8 +28,17 @@ class ChatRoomService {
 
   getChatRoomsByBoardId = async (boardId) => {
     try {
+      const board = await Board.findOne({ _id : boardId });
+
       const chatRooms = await ChatRoom.find({ boardId: boardId });
-      return chatRooms;
+      const response = {
+        title: board.title,
+        tab: board.tab,
+        isRewardGiven: board.isRewardGiven,
+        chatRooms: chatRooms
+      };
+      console.log(response);
+      return response
     } catch (error) {
       throw error;
     }
@@ -58,10 +68,11 @@ class ChatRoomService {
         _id: boardId
       });
       const boardOwnerId = board.userId;
+
       const newChatRoom = new ChatRoom({
-        boardId,
-        boardOwnerId,
-        userId
+        boardId: boardId,
+        boardOwnerId: boardOwnerId,
+        userId: userId,
       });
 
       const savedChatRoom = await newChatRoom.save();

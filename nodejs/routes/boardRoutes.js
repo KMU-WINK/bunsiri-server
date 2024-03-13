@@ -341,15 +341,16 @@ const uploads = multer({
  *         description: Internal Server Error.
  */
 
-router.get("/", boardController.getAllBoards);
-
-router.get("/:boardId", boardController.getBoard);
 
 router.get("/user/:userId", boardController.getBoardByUserId);
 
 router.get("/location/:location", boardController.getBoardByLocation);
 
 router.get("/tab/:tab", boardController.getBoardByTab);
+
+router.get("/", boardController.getAllBoards);
+
+router.get("/:boardId", boardController.getBoard);
 
 router.post("/", uploads.array("images", 3), boardController.post);
 

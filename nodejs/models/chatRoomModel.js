@@ -21,6 +21,19 @@ const chatRoomSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
         required: true
+    },
+    sendNickname: {
+        type: String
+    },
+    isRewarded: {
+        type: Boolean,
+        default: false
+    },
+    lastChat: {
+        type: String
+    },
+    lastChatTime: {
+        type: Date,
     }
 });
 

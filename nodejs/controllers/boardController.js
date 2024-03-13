@@ -79,8 +79,9 @@ class BoardController {
 
   getBoardByTab = async (req, res) => {
     try {
+      console.log(req.params);
       const tab = req.params.tab;
-      const locations = req.params.location;
+      const locations = req.query.location;
       const boards = await boardService.getBoardsByTabAndLocation(tab, locations);
       res.json({ boards });
     } catch (error) {

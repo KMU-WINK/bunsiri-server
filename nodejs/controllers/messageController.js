@@ -31,10 +31,10 @@ const getMessageById = async (req, res) => {
 
 const createMessage = async (req, res) => {
   try {
-    const userId = req.user._id;
-    const reqBody = req.body;
-    console.log(reqBody);
-    const newMessage = await messageService.createMessage(userId, reqBody);
+    const userId = req.body.userId;
+    const boardId = req.body.boardId;
+    const content = req.body.content;
+    const newMessage = await messageService.createMessage(userId, boardId, content);
     res.send(newMessage);
   } catch (err) {
     res.status(500).send(err.message);
