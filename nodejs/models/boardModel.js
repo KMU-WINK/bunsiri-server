@@ -7,6 +7,7 @@ const boardSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  nickname: { type: String, required: true },
   title: { type: String, required: true },
   content: { type: String, required: true },
   boardImages: { type: [Object] },
@@ -37,7 +38,11 @@ const boardSchema = new mongoose.Schema({
     ],
     required: true,
   },
-  gift: { type: String },
+  address: { type: String },
+  reward: { type: String },
+  matching: { type: Boolean, default: false },
+  createTime: { type: String },
+  tab: { type: String, enum: ["주인을 찾아요", "물건을 찾아요"] },
 });
 
 // board model 생성

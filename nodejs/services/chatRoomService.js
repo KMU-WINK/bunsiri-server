@@ -27,9 +27,7 @@ class ChatRoomService {
 
   getChatRoomsByBoardId = async (boardId) => {
     try {
-      const chatRooms = await ChatRoom.find({
-        boardId: boardId
-      });
+      const chatRooms = await ChatRoom.find({ boardId: boardId });
       return chatRooms;
     } catch (error) {
       throw error;

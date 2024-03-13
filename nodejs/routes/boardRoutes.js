@@ -4,36 +4,135 @@ const boardController = require("../controllers/boardController");
 const multer = require("multer");
 const path = require("path");
 
+const aws = require("aws-sdk");
+const multerS3 = require("multer-s3");
+
+// AWS S3 설정
+const s3 = new aws.S3({
+  // AWS 계정 정보 입력
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: "ap-northeast-2",
+});
+
 const uploads = multer({
-  storage: multer.diskStorage({
-    destination(req, file, cb) {
-      cb(null, "uploads/");
-    },
-    filename(req, file, cb) {
-      const ext = path.extname(file.originalname);
-      cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
+  storage: multerS3({
+    s3: s3,
+    bucket: "bunsiri", // 버킷 이름
+    acl: "public-read", // 이미지를 공개로 설정합니다.
+    key: function (req, file, cb) {
+      // images 폴더 내에 파일 저장
+      const folder = "images/";
+      const filename = Date.now().toString() + "-" + file.originalname;
+      cb(null, folder + filename); // 파일 경로 설정
     },
   }),
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 파일 크기 제한을 설정합니다.
 });
+
+// const uploads = multer({
+//   storage: multer.diskStorage({
+//     destination(req, file, cb) {
+//       cb(null, "uploads/");
+//     },
+//     filename(req, file, cb) {
+//       const ext = path.extname(file.originalname);
+//       cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
+//     },
+//   }),
+//   limits: { fileSize: 5 * 1024 * 1024 },
+// });
 
 /**
  * @swagger
  * tags:
  *   name: Boards
  *   description: API operations related to boards
+ * definitions:
+ *   Board:
+ *     type: object
+ *     properties:
+ *       userId:
+ *         type: string
+ *         description: The ID of the user who created the board.
+ *       nickname:
+ *         type: string
+ *         description: The nickname of the user who created the board.
+ *       title:
+ *         type: string
+ *         description: The title of the board.
+ *       content:
+ *         type: string
+ *         description: The content of the board.
+ *       boardImages:
+ *         type: array
+ *         items:
+ *           type: object
+ *         description: Array of board images.
+ *       location:
+ *         type: string
+ *         enum:
+ *           - 성곡도서관
+ *           - 글로벌센터
+ *           - 공학관
+ *           - 테니스장
+ *           - 농구장
+ *           - 운동장
+ *           - 복지관
+ *           - 미래관
+ *           - 예술관
+ *           - 경상관
+ *           - 국제관
+ *           - 경영관
+ *           - 북악관
+ *           - 조형관
+ *           - 본부관
+ *           - 법학관
+ *           - 과학관
+ *           - 휘랑관
+ *           - 영빈관
+ *           - 생활관 C동
+ *           - 생활관 A동
+ *         description: Location of the board.
+ *       address:
+ *         type: string
+ *         description: Address associated with the board.
+ *       reward:
+ *         type: string
+ *         description: Reward for the board.
+ *       matching:
+ *         type: boolean
+ *         default: false
+ *         description: Indicates if the board is matched.
+ *       createTime:
+ *         type: string
+ *         description: Time when the board was created.
+ *       tab:
+ *         type: string
+ *         enum:
+ *           - 주인을 찾아요
+ *           - 물건을 찾아요
+ *         description: Category of the board.
+ *   BoardsArray:
+ *     type: array
+ *     items:
+ *       $ref: '#/definitions/Board'
  */
 
 /**
  * @swagger
  * /boards:
  *   get:
- *     summary: Get all boards
+ *     summary: 모든 게시글 불러오기
  *     description: Retrieve a list of all boards.
  *     tags: [Boards]
  *     responses:
  *       200:
  *         description: A list of boards.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/BoardsArray'
  *       500:
  *         description: Internal Server Error.
  */
@@ -42,7 +141,7 @@ const uploads = multer({
  * @swagger
  * /boards/{id}:
  *   get:
- *     summary: Get board by ID
+ *     summary: 특정 게시글 읽어오기
  *     description: Retrieve detailed information about a board based on ID.
  *     parameters:
  *       - in: path
@@ -54,18 +153,100 @@ const uploads = multer({
  *     responses:
  *       200:
  *         description: Detailed information about the board.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Board'
  *       404:
  *         description: Board not found.
  *       500:
  *         description: Internal Server Error.
  */
-router.get("/:boardID", boardController.get);
+
+// userId를 기준으로 특정 사용자가 작성한 게시물 모두 불러오기
+/**
+ * @swagger
+ * /boards/user/{id}:
+ *   get:
+ *     summary: 특정 유저가 작성한 게시글 불러오기
+ *     description: Retrieve detailed information about a board based on ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     tags: [Boards]
+ *     responses:
+ *       200:
+ *         description: Detailed information about the board.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/BoardsArray'
+ *       404:
+ *         description: Board not found.
+ *       500:
+ *         description: Internal Server Error.
+ */
+
+/**
+ * @swagger
+ * /boards/location/{location}:
+ *   get:
+ *     summary: 위치에 따라 게시글 불러오기
+ *     description: Retrieve detailed information about a board based on ID.
+ *     parameters:
+ *       - in: path
+ *         name: location
+ *         required: true
+ *         schema:
+ *           type: string
+ *     tags: [Boards]
+ *     responses:
+ *       200:
+ *         description: Detailed information about the board.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/BoardsArray'
+ *       404:
+ *         description: Board not found.
+ *       500:
+ *         description: Internal Server Error.
+ */
+
+/**
+ * @swagger
+ * /boards/tab/{tab}:
+ *   get:
+ *     summary: Tab(물건을 찾아요/주인을 찾아요)에 따라 게시글 불러오기
+ *     description: Retrieve detailed information about a board based on ID.
+ *     parameters:
+ *       - in: path
+ *         name: tab
+ *         required: true
+ *         schema:
+ *           type: string
+ *     tags: [Boards]
+ *     responses:
+ *       200:
+ *         description: Detailed information about the board.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/BoardsArray'
+ *       404:
+ *         description: Board not found.
+ *       500:
+ *         description: Internal Server Error.
+ */
 
 /**
  * @swagger
  * /boards:
  *   post:
- *     summary: Create a new board
+ *     summary: 게시글 작성
  *     description: Create a new board with the provided details.
  *     requestBody:
  *       content:
@@ -75,6 +256,8 @@ router.get("/:boardID", boardController.get);
  *             type: object
  *             properties:
  *               userId:
+ *                 type: String
+ *               nickname:
  *                 type: String
  *               title:
  *                 type: String
@@ -86,24 +269,29 @@ router.get("/:boardID", boardController.get);
  *                   type: file
  *               location:
  *                 type: String
- *               gift:
+ *               reward:
+ *                 type: String
+ *               tab:
  *                 type: String
  *     tags: [Boards]
  *     responses:
  *       201:
  *         description: Board created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Board'
  *       400:
  *         description: Bad Request.
  *       500:
  *         description: Internal Server Error.
  */
-router.post("/", uploads.array("images", 3), boardController.post);
 
 /**
  * @swagger
  * /boards/{id}:
- *   put:
- *     summary: Update board by ID
+ *   patch:
+ *     summary: 게시글 수정하기
  *     description: Update board information based on ID.
  *     parameters:
  *       - in: path
@@ -121,18 +309,21 @@ router.post("/", uploads.array("images", 3), boardController.post);
  *     responses:
  *       200:
  *         description: Board updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Board'
  *       404:
  *         description: Board not found.
  *       500:
  *         description: Internal Server Error.
  */
-router.patch("/:boardID", boardController.patch);
 
 /**
  * @swagger
  * /boards/{id}:
  *   delete:
- *     summary: Delete board by ID
+ *     summary: 게시글 삭제하기
  *     description: Delete a board based on ID.
  *     parameters:
  *       - in: path
@@ -149,6 +340,21 @@ router.patch("/:boardID", boardController.patch);
  *       500:
  *         description: Internal Server Error.
  */
-router.delete("/:boardID", boardController.delete);
+
+router.get("/", boardController.getAllBoards);
+
+router.get("/:boardId", boardController.getBoard);
+
+router.get("/user/:userId", boardController.getBoardByUserId);
+
+router.get("/location/:location", boardController.getBoardByLocation);
+
+router.get("/tab/:tab", boardController.getBoardByTab);
+
+router.post("/", uploads.array("images", 3), boardController.post);
+
+router.patch("/:boardId", boardController.patch);
+
+router.delete("/:boardId", boardController.delete);
 
 module.exports = router;
