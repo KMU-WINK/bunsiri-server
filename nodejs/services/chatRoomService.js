@@ -98,6 +98,17 @@ class ChatRoomService {
         console.log("채팅방을 찾을 수 없습니다.");
         return null;
       }
+
+      const chatRoom = await ChatRoom.findOne({ _id: chatroomId });
+
+      const board = await Board.findOne({
+        _id: chatRoom.boardId
+      })
+
+      board.isRewarded = true;
+
+      board.save();
+
     } catch (error) {
       console.error("isRewarded 업데이트 중 오류가 발생했습니다:", error);
       throw error; // 오류를 상위 호출자에게 전파

@@ -37,18 +37,25 @@ class MessageService {
   async createMessage(userId, boardId, content, chatroomId) {
 
 
-
     const board = await boardModel.findOne({
       _id: boardId
     }).exec();
+
 
     const boardOwner = await userModel.findOne({
       _id: board.userId
     }).exec();
 
-    const chatRoom = await chatRoomModel.findOne({
-      _id: chatroomId
-    }).exec();
+    console.log(board.userId);
+    console.log(boardOwner);
+
+    let chatRoom;
+
+    if (chatroomId) {
+      chatRoom = await chatRoomModel.findOne({
+        _id: chatroomId
+      }).exec();
+    }
 
     const sender = await userModel.findOne({
       _id: userId
